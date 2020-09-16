@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import List from './List'
+import Form from './Form'
+import shortid from 'shortid'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    const [todos, setTodos] = useState([])
+
+    const addTodo = content => {
+        setTodos([
+            ...todos,
+            {
+                content,
+                id: shortid.generate()
+            }
+        ])
+    }
+
+    const deleteTodo = id => {
+        if (window.confirm('本当に削除しますか？')) {
+            setTodos(todos.filter(todo => todo.id !== id))
+        }
+    }
+
+    return (
+        <div style={{textAlign: "center"}}>
+            <h1>Todoリスト</h1>
+            <Form addTodo={addTodo} />
+            <List todos={todos} deleteTodo={deleteTodo} />
+        </div>
+    )
 }
 
-export default App;
+export default App
